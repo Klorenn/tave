@@ -1,35 +1,26 @@
-import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
-          )
-          supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
-          )
-        },
-      },
-    },
-  )
+  const authToken = extractAccessToken(request)
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  let user = null
+  if (authToken) {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/user`,
+        { headers: { Authorization: `Bearer ${authToken}` } },
+      )
+      if (res.ok) {
+        const body = await res.json()
+        user = body
+      }
+    } catch {
+      // fetch failed — treat as unauthenticated
+    }
+  }
 
-  // Protect the admin panel (except the login page)
   if (
     request.nextUrl.pathname.startsWith("/admin") &&
     request.nextUrl.pathname !== "/admin/login" &&
@@ -41,4 +32,19 @@ export async function updateSession(request: NextRequest) {
   }
 
   return supabaseResponse
+}
+
+function extractAccessToken(request: NextRequest): string | null {
+  const cookies = request.cookies.getAll()
+  for (const c of cookies) {
+    if (c.name.startsWith("sb-") && c.name.endsWith("-auth-token")) {
+      try {
+        const parsed = JSON.parse(c.value)
+        if (typeof parsed.access_token === "string") return parsed.access_token
+      } catch {
+        continue
+      }
+    }
+  }
+  return null
 }
