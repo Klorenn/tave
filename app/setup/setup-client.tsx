@@ -36,7 +36,9 @@ CREATE POLICY "Only admins can read contact messages" ON contact_messages
   FOR SELECT TO authenticated
   USING (auth.jwt() ->> 'is_admin' = 'true');`
 
-export function SetupClient({ supabaseUrl, anonKey }: { supabaseUrl: string; anonKey: string }) {
+export function SetupClient() {
+  const supabaseUrl = typeof window !== "undefined" ? process.env.NEXT_PUBLIC_SUPABASE_URL ?? "" : ""
+  const anonKey = typeof window !== "undefined" ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "" : ""
   const [copied, setCopied] = useState(false)
   const [checking, setChecking] = useState(false)
   const [tables, setTables] = useState<Record<string, "exists" | "missing">>({})
@@ -69,6 +71,16 @@ export function SetupClient({ supabaseUrl, anonKey }: { supabaseUrl: string; ano
 
   const projectRef = supabaseUrl.match(/https:\/\/(.+)\.supabase\.co/)?.[1] || ""
   const sqlEditorUrl = `https://supabase.com/dashboard/project/${projectRef}/sql/new`
+
+  if (!supabaseUrl) {
+    return (
+      <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-6 text-center">
+        <p className="text-sm text-destructive">
+          Las variables de entorno NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY no están configuradas.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -127,14 +139,16 @@ export function SetupClient({ supabaseUrl, anonKey }: { supabaseUrl: string; ano
           >
             {copied ? "Copiado ✓" : "Copiar SQL"}
           </button>
-          <a
-            href={sqlEditorUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded bg-primary px-4 py-2 text-xs uppercase tracking-[0.1em] text-primary-foreground hover:opacity-90"
-          >
-            Abrir SQL Editor en Supabase
-          </a>
+          {projectRef && (
+            <a
+              href={sqlEditorUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded bg-primary px-4 py-2 text-xs uppercase tracking-[0.1em] text-primary-foreground hover:opacity-90"
+            >
+              Abrir SQL Editor en Supabase
+            </a>
+          )}
         </div>
 
         <p className="text-xs text-muted-foreground">
