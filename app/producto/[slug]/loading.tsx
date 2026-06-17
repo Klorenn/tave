@@ -1,0 +1,7 @@
+export default function ProductoLoading() {
+  return (
+    <div className="flex min-h-[400px] items-center justify-center">
+      <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+    </div>
+  )
+}
