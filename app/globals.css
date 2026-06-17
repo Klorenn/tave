@@ -117,6 +117,99 @@
   --sidebar-ring: oklch(0.6 0.035 65);
 }
 
+/* ── Noir (black) ── */
+[data-theme="noir"] {
+  color-scheme: dark;
+  --background: oklch(0.13 0.008 60);
+  --foreground: oklch(0.82 0.01 60);
+  --card: oklch(0.18 0.008 60);
+  --card-foreground: oklch(0.82 0.01 60);
+  --popover: oklch(0.18 0.008 60);
+  --popover-foreground: oklch(0.82 0.01 60);
+  --primary: oklch(0.68 0.055 65);
+  --primary-foreground: oklch(0.13 0.008 60);
+  --secondary: oklch(0.22 0.008 60);
+  --secondary-foreground: oklch(0.82 0.01 60);
+  --muted: oklch(0.2 0.008 60);
+  --muted-foreground: oklch(0.6 0.01 60);
+  --accent: oklch(0.68 0.055 65);
+  --accent-foreground: oklch(0.13 0.008 60);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.25 0.008 60);
+  --input: oklch(0.25 0.008 60);
+  --ring: oklch(0.68 0.055 65);
+  --sidebar: oklch(0.18 0.008 60);
+  --sidebar-foreground: oklch(0.82 0.01 60);
+  --sidebar-primary: oklch(0.68 0.055 65);
+  --sidebar-primary-foreground: oklch(0.13 0.008 60);
+  --sidebar-accent: oklch(0.22 0.008 60);
+  --sidebar-accent-foreground: oklch(0.82 0.01 60);
+  --sidebar-border: oklch(0.25 0.008 60);
+  --sidebar-ring: oklch(0.68 0.055 65);
+}
+
+/* ── Rose (pastel pink) ── */
+[data-theme="rose"] {
+  color-scheme: light;
+  --background: oklch(0.95 0.018 10);
+  --foreground: oklch(0.35 0.035 10);
+  --card: oklch(0.98 0.008 10);
+  --card-foreground: oklch(0.35 0.035 10);
+  --popover: oklch(0.98 0.008 10);
+  --popover-foreground: oklch(0.35 0.035 10);
+  --primary: oklch(0.72 0.07 12);
+  --primary-foreground: oklch(0.98 0.008 10);
+  --secondary: oklch(0.92 0.02 10);
+  --secondary-foreground: oklch(0.35 0.035 10);
+  --muted: oklch(0.9 0.015 10);
+  --muted-foreground: oklch(0.6 0.03 10);
+  --accent: oklch(0.72 0.07 12);
+  --accent-foreground: oklch(0.98 0.008 10);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.85 0.02 10);
+  --input: oklch(0.85 0.02 10);
+  --ring: oklch(0.72 0.07 12);
+  --sidebar: oklch(0.98 0.008 10);
+  --sidebar-foreground: oklch(0.35 0.035 10);
+  --sidebar-primary: oklch(0.72 0.07 12);
+  --sidebar-primary-foreground: oklch(0.98 0.008 10);
+  --sidebar-accent: oklch(0.92 0.02 10);
+  --sidebar-accent-foreground: oklch(0.35 0.035 10);
+  --sidebar-border: oklch(0.85 0.02 10);
+  --sidebar-ring: oklch(0.72 0.07 12);
+}
+
+/* ── Lavande (pastel lavender) ── */
+[data-theme="lavande"] {
+  color-scheme: light;
+  --background: oklch(0.95 0.018 290);
+  --foreground: oklch(0.35 0.035 290);
+  --card: oklch(0.98 0.008 290);
+  --card-foreground: oklch(0.35 0.035 290);
+  --popover: oklch(0.98 0.008 290);
+  --popover-foreground: oklch(0.35 0.035 290);
+  --primary: oklch(0.72 0.07 290);
+  --primary-foreground: oklch(0.98 0.008 290);
+  --secondary: oklch(0.92 0.02 290);
+  --secondary-foreground: oklch(0.35 0.035 290);
+  --muted: oklch(0.9 0.015 290);
+  --muted-foreground: oklch(0.6 0.03 290);
+  --accent: oklch(0.72 0.07 290);
+  --accent-foreground: oklch(0.98 0.008 290);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.85 0.02 290);
+  --input: oklch(0.85 0.02 290);
+  --ring: oklch(0.72 0.07 290);
+  --sidebar: oklch(0.98 0.008 290);
+  --sidebar-foreground: oklch(0.35 0.035 290);
+  --sidebar-primary: oklch(0.72 0.07 290);
+  --sidebar-primary-foreground: oklch(0.98 0.008 290);
+  --sidebar-accent: oklch(0.92 0.02 290);
+  --sidebar-accent-foreground: oklch(0.35 0.035 290);
+  --sidebar-border: oklch(0.85 0.02 290);
+  --sidebar-ring: oklch(0.72 0.07 290);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

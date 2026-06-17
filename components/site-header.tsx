@@ -1,9 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { Heart, ShoppingBag, Menu, X, User } from "lucide-react"
+import { Heart, ShoppingBag, Menu, X, User, Palette } from "lucide-react"
 import { useCart } from "./cart-context"
+import { useColorTheme, type ColorTheme } from "./color-theme-provider"
 import { CartDrawer } from "./cart-drawer"
 import { createClient } from "@/lib/supabase/client"
 
@@ -16,13 +17,33 @@ const navLinks = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
+  const [themeOpen, setThemeOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
+  const { theme, setTheme } = useColorTheme()
   const { itemCount } = useCart()
+  const themeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
   }, [])
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (themeRef.current && !themeRef.current.contains(e.target as Node)) {
+        setThemeOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClick)
+    return () => document.removeEventListener("mousedown", handleClick)
+  }, [])
+
+  const themes: { id: ColorTheme; label: string; className: string }[] = [
+    { id: "default", label: "Clásico", className: "bg-[oklch(0.6_0.035_65)]" },
+    { id: "noir", label: "Noir", className: "bg-[oklch(0.13_0.008_60)]" },
+    { id: "rose", label: "Rose", className: "bg-[oklch(0.72_0.07_12)]" },
+    { id: "lavande", label: "Lavande", className: "bg-[oklch(0.72_0.07_290)]" },
+  ]
 
   return (
     <header>
@@ -63,6 +84,27 @@ export function SiteHeader() {
             <User className="size-3.5" />
             {user ? "Mi cuenta" : "Ingresar"}
           </Link>
+          <div className="relative" ref={themeRef}>
+            <button
+              aria-label="Cambiar tema"
+              className="transition-colors hover:text-primary"
+              onClick={() => setThemeOpen((v) => !v)}
+            >
+              <Palette className="size-4" />
+            </button>
+            {themeOpen && (
+              <div className="absolute right-0 top-full z-50 mt-2 flex gap-1.5 rounded-lg border border-border bg-card p-2 shadow-lg">
+                {themes.map((t) => (
+                  <button
+                    key={t.id}
+                    title={t.label}
+                    onClick={() => { setTheme(t.id); setThemeOpen(false) }}
+                    className={`size-5 rounded-full ring-offset-2 ring-offset-card transition-all hover:scale-110 ${t.className} ${theme === t.id ? "ring-2 ring-ring" : ""}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
           <button aria-label="Favoritos" className="transition-colors hover:text-primary">
             <Heart className="size-4" />
           </button>

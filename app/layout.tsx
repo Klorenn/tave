@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Jost } from 'next/font/google'
 import { Toaster } from '@/components/ui/sonner'
 import { CartProvider } from '@/components/cart-context'
+import { ColorThemeProvider } from '@/components/color-theme-provider'
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -53,11 +54,13 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${cormorant.variable} ${jost.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <CartProvider>
-          {children}
-          <Toaster />
-          {process.env.NODE_ENV === 'production' && <Analytics />}
-        </CartProvider>
+        <ColorThemeProvider>
+          <CartProvider>
+            {children}
+            <Toaster />
+            {process.env.NODE_ENV === 'production' && <Analytics />}
+          </CartProvider>
+        </ColorThemeProvider>
       </body>
     </html>
   )
